@@ -1,4 +1,4 @@
-import threading
+import multiprocessing
 import cv2
 
 def capture_camera():
