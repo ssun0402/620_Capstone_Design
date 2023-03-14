@@ -114,7 +114,7 @@ def respeak():
                     
                         elif word == '태언' :
                             text_division[i] = 'tae eon'
-                            
+
                         elif word == '보석' :
                             text_division[i] = 'bo seok'
                     
@@ -124,7 +124,6 @@ def respeak():
                 # 분리된 텍스트 중 이름 부분을 영어로 변경
                 names = ['myung hyun', 'hee ung', 'hye seon', 'tae eon','bo seok']
                 place = ['613', '620', '랩실', '물건']
-                r_name = []
                 r_place = []
                 # 결과 출력
                 for i in range(len(text_division)) :
@@ -137,10 +136,10 @@ def respeak():
                                     r_place = place[x]
                 print('이름은', r_name)
                 print('장소는', r_place)
-                if (r_name == True) :
-                    return vv(), r_name
-                else :
+                if r_name :
                     return vv()
+                else :
+                    return respeak()
             
             # 음성 인식 실패한 경우
             except sr.UnknownValueError:
@@ -218,10 +217,9 @@ class Facerecognition:
                 cv2.putText(frame, name, (left+ 10, bottom - 10), cv2.FONT_HERSHEY_COMPLEX, 1, (255,255,255),1)
 
             cv2.imshow('Face Recognition', frame)
-            r_name = respeak()
-            if name1 == r_name :
-                print('찾았습니다!')
-                return speak_jetson()
+            #if name1 == r_name :
+             #   print('찾았습니다!')
+              #  return speak_jetson()
                 # print(imgchar)
             if cv2.waitKey(1) == ord('q'):
                     break
@@ -234,12 +232,10 @@ def vv() :
         run.video()
 
 
-
 try:  
     while True :
         speak_jetson()
         respeak()
-        vv()
                 
 # Crtl + c 누르면 음성 인식 멈춤
 except KeyboardInterrupt: 
