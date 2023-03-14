@@ -11,7 +11,8 @@ from multiprocessing import Process
 import speech_recognition as sr
 from gtts import gTTS
 import playsound
-image_path = r'C:/Users/rkdau/OneDrive/바탕 화면/코딩/2023-1-Capstone-/example/webcam/faces/*.png'
+
+image_path = r'C:/GitHub/2023-1-Capstone-/example/webcam/faces/*.png'
 
 def face_confidence(face_distance, face_match_threshold=0.6): # face_distance 값과 face_match 임계값을 설정한 사설함수
     range = (1.0 - face_match_threshold)
@@ -22,6 +23,8 @@ def face_confidence(face_distance, face_match_threshold=0.6): # face_distance �
     else:
         value = (linear_val + ((1.0 - linear_val) * math.pow((linear_val - 0.5) * 2, 0.2))) * 100
         return str(round(value, 2)) + '%'
+
+# 이름 인식 코드    
 def speak_jetson():
             
             # 음성인식 객체 생성
@@ -54,7 +57,7 @@ def speak_jetson():
                 except sr.UnknownValueError:
                     return speak_jetson()
 
-        # 음성 인식    
+# 음성 인식    
 def respeak():
             # 음성인식 객체 생성
             r = sr.Recognizer()
@@ -99,7 +102,7 @@ def respeak():
                             break
                         
                 # 분리된 텍스트 중 이름 부분을 영어로 변경
-                name = ['명현', '태언', '혜선', '희웅','보석']
+                name = ['명현', '앨런', '엘런', '혜선', '희웅', '보석']
                 
                 for i, word in enumerate(text_division) :
                     if word in name :
@@ -112,8 +115,8 @@ def respeak():
                         elif word == '혜선' :
                             text_division[i] = 'hye seon'
                     
-                        elif word == '태언' :
-                            text_division[i] = 'tae eon'
+                        elif (word == '앨런') | (word == '엘런') :
+                            text_division[i] = 'elon'
 
                         elif word == '보석' :
                             text_division[i] = 'bo seok'
@@ -122,9 +125,12 @@ def respeak():
                 print(text_division)
                 
                 # 분리된 텍스트 중 이름 부분을 영어로 변경
-                names = ['myung hyun', 'hee ung', 'hye seon', 'tae eon','bo seok']
+                names = ['myung hyun', 'hee ung', 'hye seon', 'elon', 'bo seok']
                 place = ['613', '620', '랩실', '물건']
+                
+                r_name = []
                 r_place = []
+                
                 # 결과 출력
                 for i in range(len(text_division)) :
                     for j in range(len(names)) :
@@ -136,8 +142,11 @@ def respeak():
                                     r_place = place[x]
                 print('이름은', r_name)
                 print('장소는', r_place)
+                
+                # r_name에 단어가 있으면 객체 인식 코드로 이동
                 if r_name :
                     return vv()
+                
                 else :
                     return respeak()
             
@@ -150,7 +159,6 @@ def respeak():
                 playsound.playsound("voice2.mp3")
                 return respeak()
 
-
 class Facerecognition:
     face_location = []
     face_encoding = []
@@ -162,7 +170,7 @@ class Facerecognition:
         self.encode_faces()
 
     def encode_faces(self):
-        os.chdir('C:/Users/rkdau/OneDrive/바탕 화면/코딩/2023-1-Capstone-/example/webcam/faces')
+        os.chdir('C:/GitHub/2023-1-Capstone-/example/webcam/faces')
         file_names = os.listdir()
         for file_name in file_names :
             self.known_face_names.append(os.path.splitext(file_name)[0])
@@ -217,15 +225,20 @@ class Facerecognition:
                 cv2.putText(frame, name, (left+ 10, bottom - 10), cv2.FONT_HERSHEY_COMPLEX, 1, (255,255,255),1)
 
             cv2.imshow('Face Recognition', frame)
-            #if name1 == r_name :
-             #   print('찾았습니다!')
-              #  return speak_jetson()
-                # print(imgchar)
+            
+            if name1 == r_name :
+                print('찾았습니다!')
+            #   cap.realease()
+            #   cv2.destroyAllWindows()
+            #   print('찾았습니다!')
+            #   return speak_jetson()
+                
             if cv2.waitKey(1) == ord('q'):
-                    break
+                break
                     
-        cap.realease()
+        cap.release()
         cv2.destroyAllWindows()
+        
 def vv() :
     if __name__ == '__main__' :
         run = Facerecognition()
