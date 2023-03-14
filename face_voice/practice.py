@@ -81,7 +81,7 @@ def respeak():
                     break
                 
         # 분리된 텍스트 중 이름 부분을 영어로 변경
-        name = ['명현', '태언', '혜선', '희웅']
+        name = ['명현', '앨런', '혜선', '희웅']
         
         for i, word in enumerate(text_division) :
             if word in name :
@@ -94,14 +94,14 @@ def respeak():
                 elif word == '혜선' :
                     text_division[i] = 'hye seon'
             
-                elif word == '태언' :
-                    text_division[i] = 'tae eon'
+                elif word == '앨런' :
+                    text_division[i] = 'elon'
             
         # 결과 출력
         print(text_division)
         
         # 분리된 텍스트 중 이름 부분을 영어로 변경
-        names = ['myung hyun', 'hee ung', 'hye seon', 'tae eon']
+        names = ['myung hyun', 'hee ung', 'hye seon', 'elon']
         place = ['613', '620', '랩실', '물건']
         r_name = []
         r_place = []
@@ -117,7 +117,7 @@ def respeak():
         print('이름은', r_name)
         print('장소는', r_place)
         
-        return capture_camera()
+        return capture_camera(), r_name
 
     # 음성 인식 실패한 경우
     except sr.UnknownValueError:
@@ -148,6 +148,13 @@ def capture_camera():
 
         # 프레임 화면에 출력
         cv2.imshow('frame', frame)
+        name1 = "elon"
+        r_name = respeak()
+        if name1 == r_name :
+                print('찾았습니다!')
+                cap.realease()
+                cv2.destroyAllWindows()
+                return speak_jetson()
 
         # q 키를 누르면 종료
         if cv2.waitKey(1) & 0xFF == ord('q'):
