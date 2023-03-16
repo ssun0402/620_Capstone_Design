@@ -12,6 +12,9 @@ import speech_recognition as sr
 from gtts import gTTS
 import playsound
 
+r_name = []
+name1 = []
+
 image_path = r'C:/GitHub/2023-1-Capstone-/example/webcam/faces/*.png'
 
 def face_confidence(face_distance, face_match_threshold=0.6): # face_distance 값과 face_match 임계값을 설정한 사설함수
@@ -59,6 +62,8 @@ def speak_jetson():
 
 # 음성 인식    
 def respeak():
+            global r_name
+            
             # 음성인식 객체 생성
             r = sr.Recognizer()
 
@@ -210,7 +215,8 @@ class Facerecognition:
                     if match[best_match_index] :
                         name = self.known_face_names[best_match_index]
                         match_percent = face_confidence(face_distance[best_match_index])
-                        name1 = name
+                        
+                    name1 = name
                     self.face_names.append(f'{name} ({match_percent})')
             self.process_current_frame = not self.process_current_frame
 
@@ -226,14 +232,16 @@ class Facerecognition:
 
             cv2.imshow('Face Recognition', frame)
             
+            global r_name
+            
             if name1 == r_name :
                 print('찾았습니다!')
-            #   cap.realease()
-            #   cv2.destroyAllWindows()
-            #   print('찾았습니다!')
-            #   return speak_jetson()
+                cap.release()
+                cv2.destroyAllWindows()
+                print('찾았습니다!')
+                return speak_jetson()
                 
-            if cv2.waitKey(1) == ord('q'):
+            elif cv2.waitKey(1) == ord('q'):
                 break
                     
         cap.release()
