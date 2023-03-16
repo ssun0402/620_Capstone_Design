@@ -15,7 +15,7 @@ import playsound
 r_name = []
 name1 = []
 
-image_path = r'C:/GitHub/2023-1-Capstone-/example/webcam/faces/*.png'
+image_path = r'C:/Users/gptjs/OneDrive/바탕 화면/GitHub/2023-1-Capstone-/example/webcam/faces/*.png'
 
 def face_confidence(face_distance, face_match_threshold=0.6): # face_distance 값과 face_match 임계값을 설정한 사설함수
     range = (1.0 - face_match_threshold)
@@ -175,7 +175,7 @@ class Facerecognition:
         self.encode_faces()
 
     def encode_faces(self):
-        os.chdir('C:/GitHub/2023-1-Capstone-/example/webcam/faces')
+        os.chdir('C:/Users/gptjs/OneDrive/바탕 화면/GitHub/2023-1-Capstone-/example/webcam/faces')
         file_names = os.listdir()
         for file_name in file_names :
             self.known_face_names.append(os.path.splitext(file_name)[0])
