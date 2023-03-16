@@ -236,9 +236,14 @@ class Facerecognition:
             
             if name1 == r_name :
                 print('찾았습니다!')
+                txt = "찾았습니다!"
+                tts_kr = gTTS(txt, lang = 'ko', slow = False)
+                tts_kr.save("voice3.mp3")
+                playsound.playsound("voice3.mp3")
+                
                 cap.release()
                 cv2.destroyAllWindows()
-                print('찾았습니다!')
+                
                 return speak_jetson()
                 
             elif cv2.waitKey(1) == ord('q'):
@@ -251,7 +256,6 @@ def vv() :
     if __name__ == '__main__' :
         run = Facerecognition()
         run.video()
-
 
 try:  
     while True :
