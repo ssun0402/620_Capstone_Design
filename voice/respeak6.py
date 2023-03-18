@@ -4,11 +4,17 @@ import speech_recognition as sr
 from gtts import gTTS
 import playsound
 
-# 음성인식 시 오류나는 단어
-jetson = ["잭슨", "넥슨", "넥센"]
-place = ['620 4']
-tae_eon = ['태연', '태현']
-myung_hyun = ['명 현', '영현', '영 현']
+# 음성인식 시 오류나는 단어를 원하는 단어로 변경 해주는 코드
+def recognition_rate(text, place, tae_eon, myung_hyun):
+    for word in place + tae_eon + myung_hyun:
+        if word in text:
+            if word in place:
+                text = text.replace(word, '620')
+            elif word in tae_eon:
+                text = text.replace(word, '태언')
+            elif word in myung_hyun :
+                text = text.replace(word, '명현')
+    return text
 
 # 이름 인식 코드
 def speak_jetson():
@@ -26,6 +32,9 @@ def speak_jetson():
             # 구글 API로 인식 (하루에 50회 제한)
             text = r.recognize_google(audio_data, language = 'ko')
             
+            # 음성인식 시 오류나는 단어
+            jetson = ["잭슨", "넥슨", "넥센"]
+            
             # 오류나는 젯슨 단어를 젯슨으로 바꿔주는 코드
             for i in jetson :
                 if i in text :
@@ -36,8 +45,8 @@ def speak_jetson():
                 print("네! 부르셨나요?")
                 txt = "네! 부르셨나요?"
                 tts_kr = gTTS(txt, lang = 'ko', slow = False)
-                tts_kr.save("voice.wav")
-                playsound.playsound("voice.wav")
+                tts_kr.save("voice.mp3")
+                playsound.playsound("voice.mp3")
                 return respeak()
             
             # 다른 단어 인식 -> 다시 이름 부르는 코드로 돌아감
@@ -50,6 +59,10 @@ def speak_jetson():
 
 # 음성 인식    
 def respeak():
+    # 음성인식 시 오류나는 단어
+    place = ['620 4']
+    tae_eon = ['태연', '태현']
+    myung_hyun = ['명 현', '영현', '영 현']
     
     # 음성인식 객체 생성
     r = sr.Recognizer()
@@ -63,15 +76,20 @@ def respeak():
         # 음성을 문자열로 전환
         # 구글 API로 인식 (하루에 50회 제한)
         text = r.recognize_google(audio_data, language = 'ko')
+        #테스트 후 이 위치로 변경
+        #text = recognition_rate(text, place, tae_eon, myung_hyun)
         print("<음성을 문자로 변환한 값을 아래에 표시했습니다.>")
         print(text)
     
+        # 오류난 단어를 원하는 단어로 변경(위치는 나중에 변경해야 함 !)
+        text = recognition_rate(text, place, tae_eon, myung_hyun)
+        
         # 인식된 음성에 대한 대답
         print(text + "라고 말했습니다.")
         txt = text + "라고 말했습니다."
         tts_kr = gTTS(txt, lang = 'ko', slow = False)
-        tts_kr.save("voice.wav")
-        playsound.playsound("voice.wav")
+        tts_kr.save("voice1.mp3")
+        playsound.playsound("voice1.mp3")
 
         # 분리할 조사
         location = ['으로', '로', '이에게', '에게', '을', '를', '이한테', '한테', '에', '이']
@@ -137,8 +155,8 @@ def respeak():
         print("다시 한 번 말씀해주시겠어요?")
         txt = "다시 한 번 말씀해주시겠어요?"
         tts_kr = gTTS(txt, lang = 'ko', slow = False)
-        tts_kr.save("voice.wav")
-        playsound.playsound("voice.wav")
+        tts_kr.save("voice2.mp3")
+        playsound.playsound("voice2.mp3")
         return respeak()
 
 try:  
