@@ -13,7 +13,6 @@ from gtts import gTTS
 import playsound
 
 r_name = []
-name1 = []
 
 image_path = r'C:/Users/gptjs/OneDrive/바탕 화면/GitHub/2023-1-Capstone-/example/webcam/faces/*.png'
 
@@ -192,7 +191,7 @@ def respeak():
         tts_kr = gTTS(txt, lang = 'ko', slow = False)
         tts_kr.save("voice2.mp3")
         playsound.playsound("voice2.mp3")
-    return respeak()
+        return respeak()
 
 class Facerecognition:
     face_location = []
@@ -244,8 +243,9 @@ class Facerecognition:
                     best_match_index = np.argmin(face_distance) # 최소 값을 가진 인덱스를 알려준다
                     if match[best_match_index] :
                         name = self.known_face_names[best_match_index]
-                        match_percent = face_confidence(face_distance[best_match_index])
-                        
+                        match_percent = face_confidence(face_distance[best_match_index])  
+                    
+                    name1 = []
                     name1 = name
                     self.face_names.append(f'{name} ({match_percent})')
             self.process_current_frame = not self.process_current_frame
@@ -263,7 +263,6 @@ class Facerecognition:
             cv2.imshow('Face Recognition', frame)
             
             global r_name
-            
             if name1 == r_name :
                 print('찾았습니다!')
                 txt = "찾았습니다!"
