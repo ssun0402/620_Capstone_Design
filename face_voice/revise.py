@@ -84,9 +84,9 @@ def respeak():
     global r_name
     
     # 음성인식 시 오류나는 단어
-    place = ['620 4']
+    place = ['620 4', '20%', '625']
     tae_eon = ['태연', '태현']
-    myung_hyun = ['명 현', '영현', '영 현']
+    myung_hyun = ['명 현', '영현', '영 현', '영영', '영 영']
             
     # 음성인식 객체 생성
     r = sr.Recognizer()
