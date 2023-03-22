@@ -137,7 +137,7 @@ def respeak():
                     break
                         
         # 분리된 텍스트 중 이름 부분을 영어로 변경
-        name = ['명현', '앨런', '엘런', '혜선', '희웅', '보석']
+        name = ['명현', '앨런', '엘런', '혜선', '희웅', '태언']
                 
         for i, word in enumerate(text_division) :
             if word in name :
@@ -150,17 +150,17 @@ def respeak():
                 elif word == '혜선' :
                     text_division[i] = 'hye seon'
                     
+                elif word == '태언' :
+                    text_division[i] = 'tae eon'
+                    
                 elif (word == '앨런') | (word == '엘런') :
                     text_division[i] = 'elon'
-
-                elif word == '보석' :
-                    text_division[i] = 'bo seok'
                     
         # 결과 출력
         print(text_division)
                 
         # 분리된 텍스트 중 이름 부분을 영어로 변경
-        names = ['myung hyun', 'hee ung', 'hye seon', 'elon', 'bo seok']
+        names = ['myung hyun', 'hee ung', 'hye seon', 'tae eon', 'elon']
         place = ['613', '620', '랩실', '물건']
                 
         r_name = []
@@ -216,6 +216,7 @@ class Facerecognition:
         print(self.known_face_names)
     
     def video(self):
+        global name
         global name1
         cap = cv2.VideoCapture(0)
 
@@ -224,8 +225,7 @@ class Facerecognition:
             sys.exit()
 
         while True :
-            ret, frame = cap.read()
-                
+            ret, frame = cap.read()    
             if self.process_current_frame: # 인식처리를 더 빠르게 하기 위해 1/4 크기로 줄임
                 small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
 
@@ -246,7 +246,7 @@ class Facerecognition:
                     if match[best_match_index] :
                         name = self.known_face_names[best_match_index]
                         match_percent = face_confidence(face_distance[best_match_index])  
-                    
+                        
                     name1 = name
                     self.face_names.append(f'{name} ({match_percent})')
             self.process_current_frame = not self.process_current_frame
@@ -275,9 +275,9 @@ class Facerecognition:
                 cv2.destroyAllWindows()
                 
                 return speak_jetson()
-                
             elif cv2.waitKey(1) == ord('q'):
                 break
+            
                     
         cap.release()
         cv2.destroyAllWindows()
