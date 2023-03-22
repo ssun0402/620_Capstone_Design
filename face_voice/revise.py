@@ -13,6 +13,7 @@ from gtts import gTTS
 import playsound
 
 r_name = []
+name1 = []
 
 image_path = r'C:/Users/gptjs/OneDrive/바탕 화면/GitHub/2023-1-Capstone-/example/webcam/faces/*.png'
 
@@ -86,7 +87,7 @@ def respeak():
     # 음성인식 시 오류나는 단어
     place = ['620 4', '20%', '625']
     tae_eon = ['태연', '태현']
-    myung_hyun = ['명 현', '영현', '영 현', '영영', '영 영']
+    myung_hyun = ['명 현', '영현', '영 현', '영영', '영 영', '명 연']
             
     # 음성인식 객체 생성
     r = sr.Recognizer()
@@ -215,6 +216,7 @@ class Facerecognition:
         print(self.known_face_names)
     
     def video(self):
+        global name1
         cap = cv2.VideoCapture(0)
 
         if not cap.isOpened() :
@@ -245,7 +247,6 @@ class Facerecognition:
                         name = self.known_face_names[best_match_index]
                         match_percent = face_confidence(face_distance[best_match_index])  
                     
-                    name1 = []
                     name1 = name
                     self.face_names.append(f'{name} ({match_percent})')
             self.process_current_frame = not self.process_current_frame
