@@ -6,7 +6,7 @@ import math
 import glob
 import pytesseract
 import time
-from multiprocessing import Process
+import subprocess
 import speech_recognition as sr
 from gtts import gTTS
 import playsound
