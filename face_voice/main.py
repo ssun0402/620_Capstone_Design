@@ -1,14 +1,12 @@
-from face_win import nn 
-from respeak3 import  ree, re
-from face_win import star
-from respeak3 import speak_jetson
-import threading
-import multiprocessing as Process
+import multiprocessing
+import subprocess
 
-p0 = Process(target=star)
-p1 = Process(target=speak_jetson)
-p0.start()
-p1.start()
+if __name__ == '__main__':
+    p1 = multiprocessing.Process(target=subprocess.Popen, args=(["python", "face_win.py"],))
+    p2 = multiprocessing.Process(target=subprocess.Popen, args=(["python", "respeak6.py"],))
 
-p0.join()
-p1.join()
+    p1.start()
+    p2.start()
+
+    p1.join()
+    p2.join()
