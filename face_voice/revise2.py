@@ -265,8 +265,11 @@ class Facerecognition:
                 print('찾았습니다!')
                 txt = "찾았습니다!"
                 tts_kr = gTTS(txt, lang = 'ko', slow = False)
-                tts_kr.save("voice3.mp3")
-                playsound.playsound("voice3.mp3")
+                
+                #경로지정
+                wav_path = os.path.join("C:/Users/gptjs/OneDrive/바탕 화면/GitHub/620_Capstone_Design/face_voice", "voice3.mp3")
+                tts_kr.save(wav_path)
+                playsound.playsound(wav_path)
                 
 
                 
