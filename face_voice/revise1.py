@@ -180,9 +180,7 @@ def respeak():
         print('이름은', r_name)
         print('장소는', r_place)
                 
-        # r_name에 단어가 있으면 객체 인식 코드로 이동
-
-        return respeak()
+        return speak_jetson()
             
     # 음성 인식 실패한 경우
     except sr.UnknownValueError:
