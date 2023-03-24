@@ -1,5 +1,7 @@
 # 음성 인식률 높인 코드
 
+import subprocess
+import os
 import speech_recognition as sr
 from gtts import gTTS
 import playsound
