@@ -189,17 +189,7 @@ def respeak():
         tts_kr = gTTS(txt, lang = 'ko', slow = False)
         tts_kr.save("voice2.mp3")
         playsound.playsound("voice2.mp3")
-        
         return respeak()
-
-def find():
-    print("찾았습니다!")
-    txt = "찾았습니다.!"
-    tts_kr = gTTS(text = txt, lang = 'ko', slow = False)
-    tts_kr.save("voice.wav")
-    playsound.playsound("voice.wav")
-    
-    return speak_jetson()
 
 class Facerecognition:
     face_location = []
@@ -268,14 +258,22 @@ class Facerecognition:
                 cv2.rectangle(frame, (left, bottom - 30), (right, bottom), (0,255,0), cv2.FILLED)
                 cv2.putText(frame, name, (left+ 10, bottom - 10), cv2.FONT_HERSHEY_COMPLEX, 1, (255,255,255),1)
 
-            cv2.imshow('Face Recognition', frame)
+                cv2.imshow('Face Recognition', frame)
             
             global r_name
             if name1 == r_name :
-                return find()                
+                print('찾았습니다!')
+                txt = "찾았습니다!"
+                tts_kr = gTTS(txt, lang = 'ko', slow = False)
+                tts_kr.save("voice3.mp3")
+                playsound.playsound("voice3.mp3")
+                
+
+                
                 
             elif cv2.waitKey(1) == ord('q'):
                 break
+            
                     
         cap.release()
         cv2.destroyAllWindows()
