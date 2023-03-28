@@ -8,7 +8,7 @@ import pytesseract
 import time
 
 
-image_path = r'C:/Users/rkdau/OneDrive/바탕 화면/Coding/2023-1-Capstone-/example/webcam/faces/*.png'
+image_path = r'C:/Users/gptjs/OneDrive/바탕 화면/GitHub/2023-1-Capstone-/example/webcam/faces/*.png'
 
 def face_confidence(face_distance, face_match_threshold=0.6): # face_distance 값과 face_match 임계값을 설정한 사설함수
     range = (1.0 - face_match_threshold)
@@ -31,7 +31,7 @@ class Facerecognition:
     def __init__(self):
         self.encode_faces()
     def encode_faces(self):
-        os.chdir('C:/Users/rkdau/OneDrive/바탕 화면/Coding/2023-1-Capstone-/example/webcam/faces')
+        os.chdir('C:/Users/gptjs/OneDrive/바탕 화면/GitHub/2023-1-Capstone-/example/webcam/faces')
         file_names = os.listdir()
         for file_name in file_names :
             self.known_face_names.append(os.path.splitext(file_name)[0])
@@ -73,7 +73,7 @@ class Facerecognition:
                         match_percent = face_confidence(face_distance[best_match_index])                          
                     self.face_names.append(f'{name} ({match_percent})')
             self.process_current_frame = not self.process_current_frame
-            yield self.face_names
+
             for (top, right, bottom, left), name in zip(self.face_location, self.face_names) : # 1/4로 축소된 얼굴 크기를 다시 되돌림
                 top *= 4
                 right *= 4
@@ -87,11 +87,10 @@ class Facerecognition:
             cv2.imshow('Face Recognition', frame)
 
             if cv2.waitKey(1) & 0xFF == ord('q'):
-                 break
+                break
 
         cap.release()
         cv2.destroyAllWindows()
-
 
 
 if __name__ == "__main__":
