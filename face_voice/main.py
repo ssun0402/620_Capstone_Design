@@ -1,12 +1,10 @@
-import multiprocessing
-import subprocess
+from multi_voice import get_r_name_list
 
-if __name__ == '__main__':
-    p1 = multiprocessing.Process(target=subprocess.Popen, args=(["python", "face_win.py"],))
-    p2 = multiprocessing.Process(target=subprocess.Popen, args=(["python", "respeak6.py"],))
+def main():
+    # voice_recognition.py의 get_r_name_list 함수를 호출하여 r_name_list 값을 가져옴
+    r_name_list = get_r_name_list()
 
-    p1.start()
-    p2.start()
+    print(r_name_list)
 
-    p1.join()
-    p2.join()
+if __name__ == "__main__":
+    main()
