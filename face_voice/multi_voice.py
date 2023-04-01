@@ -1,7 +1,6 @@
 import speech_recognition as sr
 from gtts import gTTS
 import playsound
-
 def recognition_rate(text, place, tae_eon, myung_hyun):
     for word in place + tae_eon + myung_hyun:
         if word in text:
