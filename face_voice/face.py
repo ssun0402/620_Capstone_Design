@@ -1,35 +1,9 @@
 import cv2
 import face_recognition as fr
 import os
+import numpy as np
 
-def gstreamer_pipeline(
-    sensor_id=0,
-    capture_width=1920,
-    capture_height=1080,
-    display_width=960,
-    display_height=540,
-    framerate=30,
-    flip_method=0,
-):
-    return (
-        "nvarguscamerasrc sensor-id=%d !"
-        "video/x-raw(memory:NVMM), width=(int)%d, height=(int)%d, framerate=(fraction)%d/1 ! "
-        "nvvidconv flip-method=%d ! "
-        "video/x-raw, width=(int)%d, height=(int)%d, format=(string)BGRx ! "
-        "videoconvert ! "
-        "video/x-raw, format=(string)BGR ! appsink"
-        % (
-            sensor_id,
-            capture_width,
-            capture_height,
-            framerate,
-            flip_method,
-            display_width,
-            display_height,
-        )
-    )
-
-known_faces_dir = '/home/hyun/face_img'
+known_faces_dir = 'C:/Users/gptjs/OneDrive/바탕 화면/GitHub/2023-1-Capstone-/example/webcam/faces'
 
 # 저장된 이미지 파일들을 불러와 얼굴만 추출하여 encoding_list에 추가
 def load_known_faces():
@@ -44,7 +18,7 @@ def load_known_faces():
 
 def detect_face():
     # 웹캠에서 영상 읽어오기
-    cap = cv2.VideoCapture(gstreamer_pipeline(flip_method = 0), cv2.CAP_GSTREAMER)
+    cap = cv2.VideoCapture(0)
 
     # 저장된 얼굴 이미지들을 불러옴
     known_face_encodings = load_known_faces()
