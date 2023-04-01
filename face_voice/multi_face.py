@@ -8,7 +8,33 @@ import pytesseract
 import time
 
 
-image_path = r'C:/Users/gptjs/OneDrive/바탕 화면/GitHub/2023-1-Capstone-/example/webcam/faces/*.png'
+def gstreamer_pipeline(
+    sensor_id=0,
+    capture_width=1920,
+    capture_height=1080,
+    display_width=960,
+    display_height=540,
+    framerate=30,
+    flip_method=0,
+):
+    return (
+        "nvarguscamerasrc sensor-id=%d !"
+        "video/x-raw(memory:NVMM), width=(int)%d, height=(int)%d, framerate=(fraction)%d/1 ! "
+        "nvvidconv flip-method=%d ! "
+        "video/x-raw, width=(int)%d, height=(int)%d, format=(string)BGRx ! "
+        "videoconvert ! "
+        "video/x-raw, format=(string)BGR ! appsink"
+        % (
+            sensor_id,
+            capture_width,
+            capture_height,
+            framerate,
+            flip_method,
+            display_width,
+            display_height,
+        )
+    )
+image_path = r'/home/hyun/face_img/*.png'
 
 def face_confidence(face_distance, face_match_threshold=0.6): # face_distance 값과 face_match 임계값을 설정한 사설함수
     range = (1.0 - face_match_threshold)
@@ -19,7 +45,11 @@ def face_confidence(face_distance, face_match_threshold=0.6): # face_distance �
     else:
         value = (linear_val + ((1.0 - linear_val) * math.pow((linear_val - 0.5) * 2, 0.2))) * 100
         return str(round(value, 2)) + '%'
-    
+
+def process_names(names):
+    # 이곳에서 names 변수를 사용하여 원하는 작업을 수행하세요.
+    print(names)
+
 class Facerecognition:
     face_location = []
     face_encoding = []
@@ -28,10 +58,11 @@ class Facerecognition:
     known_face_names = []
     process_current_frame = True
 
-    def __init__(self):
+    def __init__(self, callback=None):
         self.encode_faces()
+
     def encode_faces(self):
-        os.chdir('C:/Users/gptjs/OneDrive/바탕 화면/GitHub/2023-1-Capstone-/example/webcam/faces')
+        os.chdir('/home/hyun/face_img')
         file_names = os.listdir()
         for file_name in file_names :
             self.known_face_names.append(os.path.splitext(file_name)[0])
@@ -41,8 +72,8 @@ class Facerecognition:
             self.known_face_encoding.append(face_encoding)
         print(self.known_face_names)
     
-    def video(self):
-        cap = cv2.VideoCapture(0)
+    def video(self, callback= None):
+        cap = cv2.VideoCapture(gstreamer_pipeline(flip_method = 0), cv2.CAP_GSTREAMER)
 
         if not cap.isOpened() :
             print('unable to open camera')
@@ -74,6 +105,8 @@ class Facerecognition:
                     self.face_names.append(f'{name} ({match_percent})')
             self.process_current_frame = not self.process_current_frame
 
+
+            yield self.face_names
             for (top, right, bottom, left), name in zip(self.face_location, self.face_names) : # 1/4로 축소된 얼굴 크기를 다시 되돌림
                 top *= 4
                 right *= 4
@@ -87,14 +120,13 @@ class Facerecognition:
             cv2.imshow('Face Recognition', frame)
 
             if cv2.waitKey(1) & 0xFF == ord('q'):
-                break
+                 break
 
         cap.release()
         cv2.destroyAllWindows()
 
 
-if __name__ == "__main__":
+
+""" if __name__ == "__main__":
     run = Facerecognition()
-    for names in run.video():
-        # 이곳에서 names 변수를 사용하여 원하는 작업을 수행하세요.
-        print(names)
+    for names in run.video(face_names) """
