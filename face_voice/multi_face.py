@@ -1,40 +1,13 @@
 import cv2
-import face_recognition as fr
 import os, sys
 import numpy as np
 import math
 import glob
 import pytesseract
 import time
+import face_recognition as fr
 
-
-def gstreamer_pipeline(
-    sensor_id=0,
-    capture_width=1920,
-    capture_height=1080,
-    display_width=960,
-    display_height=540,
-    framerate=30,
-    flip_method=0,
-):
-    return (
-        "nvarguscamerasrc sensor-id=%d !"
-        "video/x-raw(memory:NVMM), width=(int)%d, height=(int)%d, framerate=(fraction)%d/1 ! "
-        "nvvidconv flip-method=%d ! "
-        "video/x-raw, width=(int)%d, height=(int)%d, format=(string)BGRx ! "
-        "videoconvert ! "
-        "video/x-raw, format=(string)BGR ! appsink"
-        % (
-            sensor_id,
-            capture_width,
-            capture_height,
-            framerate,
-            flip_method,
-            display_width,
-            display_height,
-        )
-    )
-image_path = r'/home/hyun/face_img/*.png'
+image_path = r'C:/Users/gptjs/OneDrive/바탕 화면/GitHub/2023-1-Capstone-/example/webcam/faces/*.png'
 
 def face_confidence(face_distance, face_match_threshold=0.6): # face_distance 값과 face_match 임계값을 설정한 사설함수
     range = (1.0 - face_match_threshold)
@@ -45,10 +18,6 @@ def face_confidence(face_distance, face_match_threshold=0.6): # face_distance �
     else:
         value = (linear_val + ((1.0 - linear_val) * math.pow((linear_val - 0.5) * 2, 0.2))) * 100
         return str(round(value, 2)) + '%'
-
-def process_names(names):
-    # 이곳에서 names 변수를 사용하여 원하는 작업을 수행하세요.
-    print(names)
 
 class Facerecognition:
     face_location = []
@@ -62,7 +31,7 @@ class Facerecognition:
         self.encode_faces()
 
     def encode_faces(self):
-        os.chdir('/home/hyun/face_img')
+        os.chdir('C:/Users/gptjs/OneDrive/바탕 화면/GitHub/2023-1-Capstone-/example/webcam/faces')
         file_names = os.listdir()
         for file_name in file_names :
             self.known_face_names.append(os.path.splitext(file_name)[0])
@@ -73,15 +42,17 @@ class Facerecognition:
         print(self.known_face_names)
     
     def video(self, callback= None):
-        cap = cv2.VideoCapture(gstreamer_pipeline(flip_method = 0), cv2.CAP_GSTREAMER)
+        cap = cv2.VideoCapture(0)
 
         if not cap.isOpened() :
             print('unable to open camera')
             sys.exit()
 
         while True :
-                        
-            ret, frame = cap.read()    
+            print("1")            
+            ret, frame = cap.read()
+            print("2")            
+
             if self.process_current_frame: # 인식처리를 더 빠르게 하기 위해 1/4 크기로 줄임
                 small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
 
@@ -93,7 +64,7 @@ class Facerecognition:
 
                 self.face_names = []
                 for face_encoding in self.face_encodings: # 저장된 얼굴과 캠에서 찍힌 얼굴과 비교
-                    match = fr.compare_faces(self.known_face_encoding, face_encoding, 0.55)
+                    match = fr.compare_faces(self.known_face_encoding, face_encoding)
                     name = "???"
                     match_percent = "??.?%"
                     face_distance = fr.face_distance(self.known_face_encoding, face_encoding) # 두 사진의 인Coding 거리 값을 비교
@@ -101,9 +72,9 @@ class Facerecognition:
                     best_match_index = np.argmin(face_distance) # 최소 값을 가진 인덱스를 알려준다
                     if match[best_match_index] :
                         name = self.known_face_names[best_match_index]
-                        match_percent = face_confidence(face_distance[best_match_index])                          
-                    self.face_names.append(f'{name} ({match_percent})')
-            self.process_current_frame = not self.process_current_frame
+                        # match_percent = face_confidence(face_distance[best_match_index])                          
+                    self.face_names.append(f'{name}')
+                self.process_current_frame = not self.process_current_frame
 
 
             yield self.face_names
@@ -115,7 +86,7 @@ class Facerecognition:
 
                 cv2.rectangle(frame, (left, top), (right, bottom), (0,255,0), 1)
                 cv2.rectangle(frame, (left, bottom - 30), (right, bottom), (0,255,0), cv2.FILLED)
-                cv2.putText(frame, name, (left+ 10, bottom - 10), cv2.FONT_HERSHEY_COMPLEX, 1, (255,255,255),1)
+                # cv2.putText(frame, name, (left+ 10, bottom - 10), cv2.FONT_HERSHEY_COMPLEX, 1, (255,255,255),1)
 
             cv2.imshow('Face Recognition', frame)
 
@@ -127,6 +98,6 @@ class Facerecognition:
 
 
 
-""" if __name__ == "__main__":
+if __name__ == "__main__":
     run = Facerecognition()
-    for names in run.video(face_names) """
+    run.video()
