@@ -43,7 +43,7 @@ def speak_jetson():
                 print("네! 부르셨나요?")
                 txt = "네! 부르셨나요?"
                 tts_kr = gTTS(txt, lang = 'ko', slow = False)
-                wav_path = os.path.join("/home/hyun/ssun", "voice.wav")
+                wav_path = os.path.join("/home/hyun/2023-1-Capstone-/face_voice", "voice.wav")
                 tts_kr.save(wav_path)
                 playsound.playsound(wav_path)
                 
@@ -90,7 +90,7 @@ def respeak():
         print(text + "라고 말했습니다.")
         txt = text + "라고 말했습니다."
         tts_kr = gTTS(txt, lang = 'ko', slow = False)
-        wav_path = os.path.join("/home/hyun/ssun", "voice.wav")
+        wav_path = os.path.join("/home/hyun/2023-1-Capstone-/face_voice", "voice.wav")
         tts_kr.save(wav_path)
         playsound.playsound(wav_path)
 
@@ -157,14 +157,14 @@ def respeak():
         print('장소는', r_place)
                 
         # r_name에 단어가 있으면 객체 인식 코드로 이동
-        return r_name if r_name else speak_jetson()
+        return r_name if r_name else respeak()
             
     # 음성 인식 실패한 경우
     except sr.UnknownValueError:
         print("다시 한 번 말씀해주시겠어요?")
         txt = "다시 한 번 말씀해주시겠어요?"
         tts_kr = gTTS(txt, lang = 'ko', slow = False)
-        wav_path = os.path.join("/home/hyun/ssun", "voice.wav")
+        wav_path = os.path.join("/home/hyun/2023-1-Capstone-/face_voice", "voice.wav")
         tts_kr.save(wav_path)
         playsound.playsound(wav_path)
         return respeak()
