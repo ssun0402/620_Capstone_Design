@@ -1,6 +1,8 @@
 import speech_recognition as sr
 from gtts import gTTS
 import playsound
+import os
+
 def recognition_rate(text, place, tae_eon, myung_hyun):
     for word in place + tae_eon + myung_hyun:
         if word in text:
@@ -41,8 +43,10 @@ def speak_jetson():
                 print("네! 부르셨나요?")
                 txt = "네! 부르셨나요?"
                 tts_kr = gTTS(txt, lang = 'ko', slow = False)
-                tts_kr.save("voice.mp3")
-                playsound.playsound("voice.mp3")
+                wav_path = os.path.join("/home/hyun/ssun", "voice.wav")
+                tts_kr.save(wav_path)
+                playsound.playsound(wav_path)
+                
                 return respeak()
                     
             # 다른 단어 인식 -> 다시 이름 부르는 코드로 돌아감
@@ -86,8 +90,9 @@ def respeak():
         print(text + "라고 말했습니다.")
         txt = text + "라고 말했습니다."
         tts_kr = gTTS(txt, lang = 'ko', slow = False)
-        tts_kr.save("voice1.mp3")
-        playsound.playsound("voice1.mp3")
+        wav_path = os.path.join("/home/hyun/ssun", "voice.wav")
+        tts_kr.save(wav_path)
+        playsound.playsound(wav_path)
 
         # 분리할 조사
         location = ['으로', '로', '이에게', '에게', '을', '를', '이한테', '한테', '에', '이']
@@ -159,8 +164,9 @@ def respeak():
         print("다시 한 번 말씀해주시겠어요?")
         txt = "다시 한 번 말씀해주시겠어요?"
         tts_kr = gTTS(txt, lang = 'ko', slow = False)
-        tts_kr.save("voice2.mp3")
-        playsound.playsound("voice2.mp3")
+        wav_path = os.path.join("/home/hyun/ssun", "voice.wav")
+        tts_kr.save(wav_path)
+        playsound.playsound(wav_path)
         return respeak()
     
 def main():
