@@ -1,4 +1,4 @@
-# 음성 인식률 높인 코드
+# 재확인 코드
 
 import speech_recognition as sr
 from gtts import gTTS
@@ -85,11 +85,16 @@ def respeak():
         text = recognition_rate(text, place, tae_eon, myung_hyun)
         
         # 인식된 음성에 대한 대답
-        print(text + "라고 말했습니다.")
-        txt = text + "라고 말했습니다."
+        print(text + "라고 말했습니까?")
+        txt = text + "라고 말했습니까?"
         tts_kr = gTTS(txt, lang = 'ko', slow = False)
         tts_kr.save("voice.wav")
         playsound.playsound("voice.wav")
+        
+        # 이 부분 수정 해야 함!
+        # 마이크로부터 오디오 읽기
+        audio_data = r.record(source, duration = 5)
+        text1 = r.recognize_google(audio_data, language = 'ko')
 
         # 분리할 조사
         location = ['으로', '로', '이에게', '에게', '을', '를', '이한테', '한테', '에', '이']
