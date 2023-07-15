@@ -18,7 +18,7 @@ MPU6050
 
 MPU6050 모듈을 사용하기 위한 코드
 
-MPU6040 topic 발행
+MPU6050 topic 발행
 
 #
 motor
